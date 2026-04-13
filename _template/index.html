@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--
+    D100 VSL TEMPLATE — Ground Up Agency
+    =====================================
+    VARIABLES TO REPLACE PER PROSPECT:
+      {{PROSPECT_NAME}}         — e.g. "Mabrie Facial Institute"
+      {{PROSPECT_SLUG}}         — e.g. "mabrie"
+      {{NICHE}}                 — e.g. "med clinic" / "immigration law firm"
+      {{UNIT}}                  — e.g. "patients" / "clients" / "customers"
+      {{DELIVERABLE_SUMMARY}}   — one sentence: "ad creative, email sequences, landing pages, and a campaign structure"
+      {{AUDIT_DATE}}            — e.g. "April 2026"
+      {{LOOM_ID}}               — Loom video ID (after loom.com/share/)
+      {{CALENDLY_URL}}          — your booking link
+      {{EMAIL}}                 — your email
+      {{PROOF_FOUNDER_1_NAME}} / {{PROOF_FOUNDER_1_BIZ}}
+      {{PROOF_FOUNDER_1_PHOTO}}       — file path or URL (banner profile image)
+      {{PROOF_FOUNDER_1_SCREENSHOT}}  — file path or URL (testimonial proof image)
+      {{PROOF_FOUNDER_1_INSTAGRAM}}   — Instagram profile URL
+      {{PROOF_FOUNDER_1_BULLET_1}} / {{PROOF_FOUNDER_1_BULLET_2}} / {{PROOF_FOUNDER_1_BULLET_3}}
+      (repeat _2 and _3)
+  -->
+  <title>{{PROSPECT_NAME}} — Ground Up Agency</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0b1120;
+      --surface:    #111d2e;
+      --surface2:   #1a2b3d;
+      --border:     #243549;
+      --text:       #e4eaf2;
+      --text-dim:   #8b9bb5;
+      --accent:     #0EA5E9;
+      --accent-dim: #0284C7;
+      --accent-glow: rgba(14,165,233,.15);
+      --green:      #34d399;
+      --red:        #f87171;
+      --yellow:     #fbbf24;
+      --blue:       #38bdf8;
+      --green-bg:   rgba(52,211,153,.08);
+      --red-bg:     rgba(248,113,113,.08);
+      --yellow-bg:  rgba(251,191,36,.08);
+      --blue-bg:    rgba(56,189,248,.08);
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    /* ─── DECK CONTAINER ─── */
+    .deck {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ─── SLIDES ─── */
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+      background: var(--bg);
+    }
+    .slide.surface { background: var(--surface); }
+
+    .slide-body {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 56px 40px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .slide-body.top { justify-content: flex-start; padding-top: 60px; }
+
+    @media (max-width: 640px) {
+      .slide-body { padding: 40px 20px; }
+    }
+
+    /* ─── DECK NAVIGATION UI ─── */
+    .deck-ui {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .deck-dots {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 4px;
+    }
+    .deck-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .deck-dot.active {
+      background: var(--accent);
+      transform: scale(1.4);
+    }
+
+    .deck-arrow {
+      width: 34px; height: 34px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      color: var(--text-dim);
+    }
+    .deck-arrow:hover { border-color: var(--accent); color: var(--accent); }
+    .deck-arrow svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .deck-arrow:disabled { opacity: 0.25; cursor: default; }
+    .deck-arrow:disabled:hover { border-color: var(--border); color: var(--text-dim); }
+
+    .slide-counter {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Brand watermark */
+    .deck-brand {
+      position: fixed;
+      top: 20px;
+      left: 28px;
+      z-index: 200;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .deck-brand span { color: var(--accent); }
+
+    /* ─── LABEL ─── */
+    .label {
+      display: block; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 12px;
+      text-align: center;
+    }
+
+    /* ─── HEADINGS ─── */
+    h2.section-title {
+      font-size: clamp(1.3rem, 2.8vw, 1.9rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    h2.section-title em { font-style: normal; color: var(--accent); }
+    .section-sub {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      text-align: center;
+      max-width: 580px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-block; text-decoration: none;
+      border-radius: 8px; font-size: 0.88rem; font-weight: 600;
+      letter-spacing: 0.03em; transition: opacity 0.2s, background 0.2s;
+      padding: 14px 32px;
+    }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: var(--accent-dim); }
+    .btn-surface { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-surface:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-ghost { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─── SLIDE 1: HERO ─── */
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent-glow); border: 1px solid rgba(14,165,233,.3);
+      border-radius: 20px; padding: 5px 14px; margin-bottom: 20px;
+      font-size: 0.75rem; font-weight: 600; color: var(--accent);
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .hero-h1 {
+      font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+      font-weight: 800; line-height: 1.1;
+      color: var(--text); max-width: 760px; margin: 0 auto 12px;
+      letter-spacing: -0.03em; text-align: center;
+    }
+    .hero-h1 em { font-style: normal; color: var(--accent); }
+    .hero-sub {
+      font-size: 1rem; color: var(--text-dim);
+      max-width: 520px; line-height: 1.65; margin: 0 auto 24px;
+      text-align: center;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 600; }
+
+    /* VSL in hero */
+    .vsl-embed {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 12px; box-shadow: 0 16px 56px rgba(0,0,0,0.5), 0 0 0 1px var(--border);
+      margin-bottom: 24px;
+    }
+    .vsl-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px; }
+    .vsl-placeholder {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--surface2); border-radius: 12px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; cursor: pointer;
+    }
+    .vsl-placeholder:hover .play-btn { transform: scale(1.06); }
+    .play-btn {
+      width: 72px; height: 72px; background: var(--accent); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 28px rgba(14,165,233,0.45); transition: transform 0.2s;
+    }
+    .play-btn svg { width: 26px; height: 26px; fill: #fff; margin-left: 4px; }
+    .vsl-placeholder p { font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+    /* ─── SLIDE 2: SOCIAL PROOF ─── */
+    .proof-stats { display: flex; gap: 0; flex-wrap: wrap; margin: 0 0 32px; }
+    .proof-stat {
+      flex: 1; min-width: 120px;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 18px 16px; text-align: center;
+    }
+    .proof-stat:first-child { border-radius: 10px 0 0 10px; }
+    .proof-stat:last-child  { border-radius: 0 10px 10px 0; }
+    .proof-stat + .proof-stat { border-left: none; }
+    .proof-stat .num {
+      font-size: 1.8rem; font-weight: 800; color: var(--accent);
+      line-height: 1; margin-bottom: 6px; letter-spacing: -0.03em;
+    }
+    .proof-stat .lbl { font-size: 0.75rem; color: var(--text-dim); line-height: 1.4; }
+
+    .founder-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .founder-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: border-color 0.2s;
+    }
+    .founder-card:hover { border-color: rgba(14,165,233,.4); }
+
+    /* ── Banner profile image (full-width rectangle at top) ── */
+    .founder-banner {
+      width: 100%; aspect-ratio: 16/7; overflow: hidden;
+      background: var(--surface2); position: relative;
+    }
+    .founder-banner img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;
+    }
+    .founder-banner-placeholder {
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    /* ── Card body ── */
+    .founder-card-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+    .founder-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .founder-name { font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .founder-ig-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.72rem; color: var(--accent); text-decoration: none;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .founder-ig-link:hover { color: var(--blue); }
+    .founder-ig-link svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+
+    /* ── Proof screenshot ── */
+    .founder-proof {
+      background: var(--surface2); border-radius: 8px; overflow: hidden;
+      min-height: 140px; display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .founder-proof img { width: 100%; height: auto; display: block; max-height: 200px; object-fit: cover; }
+    .founder-proof-placeholder {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .founder-proof-placeholder svg { opacity: 0.25; }
+
+    /* ── Results bullets ── */
+    .founder-bullets { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .founder-bullets li {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 0.8rem; color: var(--text-dim); line-height: 1.5;
+    }
+    .founder-bullets li::before {
+      content: ''; display: block; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0; margin-top: 6px;
+    }
+
+    /* ─── SLIDE 3: DELIVERABLES ─── */
+    .del-sub-centered { font-size: 0.9rem; color: var(--text-dim); text-align: center; margin-bottom: 28px; line-height: 1.6; }
+
+    details { margin-bottom: 6px; }
+    summary {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px; cursor: pointer; list-style: none;
+      user-select: none; transition: background 0.15s, border-color 0.15s;
+    }
+    summary:hover { background: rgba(14,165,233,.04); border-color: rgba(14,165,233,.3); }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { border-radius: 10px 10px 0 0; border-bottom: 1px solid var(--border); }
+    .sum-left { display: flex; align-items: center; gap: 12px; }
+    .sum-icon {
+      width: 28px; height: 28px; border-radius: 7px; background: var(--accent-glow);
+      border: 1px solid rgba(14,165,233,.25);
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    }
+    .sum-icon svg { width: 13px; height: 13px; stroke: var(--accent); fill: none; stroke-width: 2; }
+    .sum-title { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .sum-badge {
+      font-size: 0.68rem; color: var(--accent);
+      background: var(--accent-glow); border: 1px solid rgba(14,165,233,.25);
+      padding: 2px 8px; border-radius: 20px; font-weight: 600; white-space: nowrap;
+    }
+    .chevron { transition: transform 0.25s; }
+    .chevron svg { width: 14px; height: 14px; stroke: var(--text-dim); fill: none; stroke-width: 2; }
+    details[open] .chevron { transform: rotate(180deg); }
+
+    .det-body {
+      background: var(--bg); border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 10px 10px; padding: 20px 18px;
+    }
+    .det-body p  { font-size: 0.88rem; color: var(--text-dim); line-height: 1.75; margin-bottom: 12px; }
+    .det-body p:last-child { margin-bottom: 0; }
+    .det-body strong { color: var(--text); }
+    .det-body h4 {
+      font-size: 0.68rem; font-weight: 700; color: var(--accent);
+      letter-spacing: 0.06em; text-transform: uppercase; margin: 16px 0 8px;
+      text-align: left;
+    }
+    .det-body h4:first-child { margin-top: 0; }
+    .det-body ul { padding-left: 18px; }
+    .det-body li { font-size: 0.88rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 4px; }
+
+    .email-card {
+      background: var(--surface); border-left: 2px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 12px 14px; margin: 8px 0;
+    }
+    .email-card .tag   { font-size: 0.66rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+    .email-card .subj  { font-size: 0.83rem; font-weight: 600; color: var(--text); margin-bottom: 7px; }
+    .email-card .copy  { font-size: 0.83rem; color: var(--text-dim); line-height: 1.75; white-space: pre-wrap; }
+
+    .ad-card {
+      background: var(--surface); border-top: 2px solid var(--accent);
+      border-radius: 0 0 6px 6px; padding: 12px 14px; margin: 8px 0;
+    }
+    .ad-card .tag   { font-size: 0.66rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+    .ad-card .title { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 7px; }
+    .ad-card .copy  { font-size: 0.83rem; color: var(--text-dim); line-height: 1.75; }
+
+    /* ─── SLIDE 4: AUDIT ─── */
+    .audit-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin: 20px 0 32px; }
+    .audit-stat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 18px 14px; border-left: 3px solid var(--red);
+    }
+    .audit-stat-card .val { font-size: 1.8rem; font-weight: 800; color: var(--red); line-height: 1; margin-bottom: 7px; letter-spacing: -0.03em; }
+    .audit-stat-card .desc { font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; }
+
+    .audit-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 28px; border-radius: 8px; overflow: hidden; }
+    .audit-table th {
+      background: var(--surface2); color: var(--text-dim); text-align: left;
+      padding: 10px 14px; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .audit-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .audit-table tr:last-child td { border-bottom: none; }
+    .audit-table tr:hover td { background: rgba(14,165,233,.03); }
+    .s-none    { color: var(--red);    font-weight: 700; }
+    .s-ok      { color: var(--green);  font-weight: 700; }
+    .s-partial { color: var(--yellow); font-weight: 700; }
+
+    .gap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-bottom: 32px; }
+    .gap-card {
+      border-left: 3px solid var(--red); background: var(--surface);
+      border-radius: 0 8px 8px 0; padding: 14px 12px;
+    }
+    .gap-card h4 { font-size: 0.86rem; font-weight: 700; color: var(--text); margin-bottom: 6px; text-align: left; }
+    .gap-card p  { font-size: 0.83rem; color: var(--text-dim); line-height: 1.65; }
+
+    .phase-list { display: flex; flex-direction: column; gap: 8px; }
+    .phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 16px; }
+    .phase-num   { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; display: block; }
+    .phase-title { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 7px; }
+    .phase-body  { font-size: 0.83rem; color: var(--text-dim); line-height: 1.7; }
+    .phase-body ul { padding-left: 18px; margin-top: 6px; }
+    .phase-body li { margin-bottom: 4px; }
+    .phase-body p  { margin-bottom: 6px; }
+
+    /* ─── SLIDE 5: OFFER ─── */
+    .pricing-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 24px 0; }
+    .pricing-table th {
+      background: var(--surface2); text-align: left; padding: 10px 14px;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-dim); border-bottom: 1px solid var(--border);
+    }
+    .pricing-table td { padding: 13px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+    .pricing-table tr:last-child td { border-bottom: none; }
+    .pricing-table tr:hover td { background: rgba(14,165,233,.03); }
+    .price-val { font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+    .guarantee-box {
+      background: var(--bg); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0; padding: 24px 22px; margin-top: 20px;
+    }
+    .guarantee-box h3 {
+      font-size: 1.1rem; font-weight: 700; color: var(--text);
+      margin-bottom: 10px; line-height: 1.3; text-align: left;
+    }
+    .guarantee-box p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.75; margin-bottom: 8px; }
+    .guarantee-box p:last-child { margin-bottom: 0; }
+
+    /* ─── SLIDE 6: FINAL CTA ─── */
+    .cta-h2 {
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem); font-weight: 800;
+      color: var(--text); line-height: 1.15; margin-bottom: 12px;
+      letter-spacing: -0.02em; text-align: center;
+    }
+    .cta-h2 em { font-style: normal; color: var(--accent); }
+    .cta-sub { font-size: 1rem; color: var(--text-dim); line-height: 1.7; max-width: 480px; margin: 0 auto 28px; text-align: center; }
+    .cta-note { font-size: 0.8rem; color: var(--text-dim); margin-top: 14px; text-align: center; }
+    .cta-note a { color: var(--accent); text-decoration: none; }
+    .cta-note a:hover { text-decoration: underline; }
+
+    .cta-footer { margin-top: 40px; text-align: center; font-size: 0.78rem; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 20px; }
+    .cta-footer strong { color: var(--text); }
+    .cta-footer a { color: var(--accent); text-decoration: none; }
+
+    /* ─── DECK-UI TOC LABELS ─── */
+    .deck-ui-title {
+      font-size: 9px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-dim);
+      text-align: right; margin-bottom: 8px; white-space: nowrap;
+    }
+    .deck-dot-row {
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+    }
+    .deck-dot-lbl {
+      font-size: 10px; color: var(--text-dim); white-space: nowrap;
+      text-align: right; line-height: 1;
+      max-width: 0; overflow: hidden; opacity: 0;
+      transition: max-width .25s ease, opacity .2s ease;
+    }
+    .deck-ui:hover .deck-dot-lbl { max-width: 140px; opacity: 1; }
+    .deck-dot-row.toc-active .deck-dot-lbl { max-width: 140px; opacity: 1; color: var(--accent); }
+
+    /* ─── BIG NEXT ARROW (fixed, global) ─── */
+    #next-hint-btn {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      width: 52px; height: 52px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color .2s, background .2s, box-shadow .2s;
+      color: var(--text-dim); z-index: 150;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      animation: bounceHint 2.5s ease-in-out 1.5s 3;
+    }
+    #next-hint-btn:hover {
+      border-color: var(--accent); color: var(--accent);
+      background: var(--accent-glow); box-shadow: 0 4px 24px rgba(14,165,233,0.2);
+    }
+    #next-hint-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+    @keyframes bounceHint {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── HERO PROOF STRIP ─── */
+    .hero-proof-strip {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      margin-top: 22px; gap: 0;
+    }
+    .hero-proof-item {
+      padding: 10px 18px; border: 1px solid var(--border);
+      text-align: center; background: var(--surface);
+    }
+    .hero-proof-item:first-child { border-radius: 8px 0 0 8px; }
+    .hero-proof-item:last-child  { border-radius: 0 8px 8px 0; }
+    .hero-proof-item + .hero-proof-item { border-left: none; }
+    .hero-proof-num { font-size: 1.25rem; font-weight: 800; color: var(--accent); letter-spacing: -.02em; line-height: 1; }
+    .hero-proof-lbl { font-size: 0.68rem; color: var(--text-dim); margin-top: 4px; line-height: 1.3; }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 640px) {
+      /* Nav bar — solid background always */
+      .deck-ui {
+        position: fixed;
+        right: 0; left: 0; top: auto; bottom: 0;
+        transform: none;
+        flex-direction: row; justify-content: center; align-items: center;
+        background: var(--surface) !important;
+        border-top: 1px solid var(--border);
+        box-shadow: 0 -4px 24px rgba(0,0,0,0.5);
+        padding: 10px 20px; gap: 16px; width: 100%;
+        height: 58px;
+        z-index: 200;
+      }
+      .deck-ui-title { display: none; }
+      .deck-dots { flex-direction: row; gap: 10px; margin-bottom: 0; }
+      .deck-dot { width: 8px; height: 8px; }
+      .deck-dot-lbl { display: none; }
+      .slide-counter { font-size: 0.72rem; order: -1; }
+      .deck-arrow { width: 38px; height: 38px; }
+
+      /* Slide body: top clears brand watermark, bottom clears nav bar */
+      .slide-body { padding: 56px 18px 80px; }
+      .slide-body.top { padding-top: 56px; }
+
+      /* Global next arrow sits above mobile nav */
+      #next-hint-btn { bottom: 70px; }
+
+      /* Tables scroll horizontally instead of breaking */
+      .audit-table, .pricing-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+      /* Proof strip wraps gracefully */
+      .hero-proof-strip { gap: 8px; }
+      .hero-proof-item { flex: 1; min-width: 80px; border-radius: 8px !important; border: 1px solid var(--border) !important; padding: 8px 10px; }
+      .hero-proof-num { font-size: 1.05rem; }
+      .hero-proof-lbl { font-size: 0.62rem; }
+
+      /* Proof stats wrap on small screens */
+      .proof-stats { gap: 8px; }
+      .proof-stat { flex: 1 1 40%; border-radius: 8px !important; border: 1px solid var(--border) !important; }
+      .proof-stat + .proof-stat { border-left: 1px solid var(--border) !important; }
+
+      /* Gap grid single column */
+      .gap-grid { grid-template-columns: 1fr; }
+
+      /* Phase list spacing */
+      .phase-card { padding: 16px; }
+
+      /* Founder grid single column */
+      .founder-grid { grid-template-columns: 1fr; }
+
+      /* TOC nav center aligned */
+      nav[style*="inline-block"] { display: block !important; text-align: center; }
+      nav[style*="inline-block"] ol li { justify-content: center; }
+
+      /* Hero headline smaller */
+      .hero-h1 { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Brand watermark -->
+<div class="deck-brand">Ground Up <span>Agency</span></div>
+
+<!-- Deck navigation UI -->
+<div class="deck-ui">
+  <p class="deck-ui-title">Contents</p>
+  <div class="deck-dots" id="deck-dots"></div>
+  <div class="slide-counter" id="slide-counter">1 / 6</div>
+  <button class="deck-arrow" id="btn-prev" onclick="prevSlide()" title="Previous (↑)">
+    <svg viewBox="0 0 24 24"><polyline points="18,15 12,9 6,15"/></svg>
+  </button>
+  <button class="deck-arrow" id="btn-next" onclick="nextSlide()" title="Next (↓)">
+    <svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg>
+  </button>
+</div>
+
+
+<div class="deck" id="deck">
+
+  <!-- ═══ SLIDE 1: HERO + VSL ═══ -->
+  <div class="slide surface" id="slide-0">
+    <div class="slide-body" style="text-align:center;">
+      <div style="display:flex;justify-content:center;margin-bottom:20px;">
+        <span class="hero-eyebrow">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Custom Growth Package
+        </span>
+      </div>
+      <h1 class="hero-h1">
+        10+ new {{UNIT}} per month for <em>{{PROSPECT_NAME}}</em>. Guaranteed.
+      </h1>
+      <p class="hero-sub">
+        <strong>60 days or we work for free.</strong> Every asset we build stays with you.
+      </p>
+
+      <!-- VSL above buttons -->
+      <div class="vsl-embed" style="margin-bottom:24px;">
+        <div class="vsl-placeholder" id="vsl-placeholder" onclick="loadVSL()">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" style="fill:#fff;stroke:none;"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+          <p>Click to play</p>
+        </div>
+        <iframe id="vsl-iframe" src="" style="display:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+
+      <div class="hero-btns">
+        <a href="#" onclick="goToSlide(5);return false;" class="btn btn-accent">Book a Call</a>
+      </div>
+
+      <!-- SOCIAL PROOF STRIP -->
+      <div class="hero-proof-strip">
+        <div class="hero-proof-item">
+          <div class="hero-proof-num">$1M+</div>
+          <div class="hero-proof-lbl">generated for creators &amp; B2C businesses</div>
+        </div>
+        <div class="hero-proof-item">
+          <div class="hero-proof-num">$4B+</div>
+          <div class="hero-proof-lbl">luxury real estate value marketed</div>
+        </div>
+        <div class="hero-proof-item">
+          <div class="hero-proof-num">4M+</div>
+          <div class="hero-proof-lbl">total followers across clients</div>
+        </div>
+      </div>
+
+      <!-- TABLE OF CONTENTS -->
+      <nav style="margin-top:28px;border-top:1px solid var(--border);padding-top:20px;display:inline-block;text-align:left;">
+        <p style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px;">Table of Contents</p>
+        <ol style="list-style:none;display:flex;flex-direction:column;gap:9px;">
+          <li style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);font-variant-numeric:tabular-nums;min-width:16px;">01</span>
+            <a href="#" onclick="goToSlide(1);return false;" style="font-size:13px;color:var(--text-dim);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">Proof &amp; Results</a>
+          </li>
+          <li style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);font-variant-numeric:tabular-nums;min-width:16px;">02</span>
+            <a href="#" onclick="goToSlide(2);return false;" style="font-size:13px;color:var(--text-dim);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">What We Already Built You</a>
+          </li>
+          <li style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);font-variant-numeric:tabular-nums;min-width:16px;">03</span>
+            <a href="#" onclick="goToSlide(3);return false;" style="font-size:13px;color:var(--text-dim);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">Your Audit</a>
+          </li>
+          <li style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);font-variant-numeric:tabular-nums;min-width:16px;">04</span>
+            <a href="#" onclick="goToSlide(4);return false;" style="font-size:13px;color:var(--text-dim);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">The Offer</a>
+          </li>
+        </ol>
+      </nav>
+
+    </div>
+  </div>
+
+
+  <!-- ═══ SLIDE 2: SOCIAL PROOF ═══ -->
+  <div class="slide" id="slide-1">
+    <div class="slide-body top">
+      <span class="label">Results From Real Businesses</span>
+      <h2 class="section-title">Not case studies. <em>Actual clients, actual numbers.</em></h2>
+      <p class="section-sub">Built in the most competitive direct response environment there is. Applied here.</p>
+
+      <div class="proof-stats">
+        <div class="proof-stat">
+          <div class="num">$1M+</div>
+          <div class="lbl">Generated for creators &amp; B2C businesses online</div>
+        </div>
+        <div class="proof-stat">
+          <div class="num">$4B+</div>
+          <div class="lbl">Luxury real estate value marketed</div>
+        </div>
+        <div class="proof-stat">
+          <div class="num">4M+</div>
+          <div class="lbl">Total followers across clients</div>
+        </div>
+        <div class="proof-stat">
+          <div class="num">3 yrs</div>
+          <div class="lbl">At Meta on Newsfeed infrastructure</div>
+        </div>
+      </div>
+
+      <div class="founder-grid">
+
+        <!-- CARD 1 — Ben Seda -->
+        <div class="founder-card">
+          <div class="founder-banner">
+            <img src="../assets/ben_profile.png" alt="Benjamin Seda" />
+          </div>
+          <div class="founder-card-body">
+            <div class="founder-header">
+              <div class="founder-name">Benjamin Seda</div>
+              <a href="https://www.instagram.com/realbenjaminseda" target="_blank" rel="noopener" class="founder-ig-link">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                @realbenjaminseda
+              </a>
+            </div>
+            <div class="founder-proof">
+              <img src="../assets/benji_proof.png" alt="Results — Benjamin Seda" />
+            </div>
+            <ul class="founder-bullets">
+              <li>{{PROOF_FOUNDER_1_BULLET_1}}</li>
+              <li>{{PROOF_FOUNDER_1_BULLET_2}}</li>
+              <li>{{PROOF_FOUNDER_1_BULLET_3}}</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- CARD 2 — Darius -->
+        <div class="founder-card">
+          <div class="founder-banner">
+            <img src="../assets/darius_profile.png" alt="Darius" />
+          </div>
+          <div class="founder-card-body">
+            <div class="founder-header">
+              <div class="founder-name">Darius</div>
+              <a href="https://www.instagram.com/dariusworkout" target="_blank" rel="noopener" class="founder-ig-link">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                @dariusworkout
+              </a>
+            </div>
+            <div class="founder-proof">
+              <img src="../assets/darius_proof.png" alt="Results — Darius" />
+            </div>
+            <ul class="founder-bullets">
+              <li>{{PROOF_FOUNDER_2_BULLET_1}}</li>
+              <li>{{PROOF_FOUNDER_2_BULLET_2}}</li>
+              <li>{{PROOF_FOUNDER_2_BULLET_3}}</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- CARD 3 — Zack Gray -->
+        <div class="founder-card">
+          <div class="founder-banner">
+            <img src="../assets/zack_profile.png" alt="Zack Gray" />
+          </div>
+          <div class="founder-card-body">
+            <div class="founder-header">
+              <div class="founder-name">Zack Gray</div>
+              <a href="https://www.instagram.com/zackgray" target="_blank" rel="noopener" class="founder-ig-link">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                @zackgray
+              </a>
+            </div>
+            <div class="founder-proof">
+              <img src="../assets/zackgray_proof.png" alt="Results — Zack Gray" />
+            </div>
+            <ul class="founder-bullets">
+              <li>{{PROOF_FOUNDER_3_BULLET_1}}</li>
+              <li>{{PROOF_FOUNDER_3_BULLET_2}}</li>
+              <li>{{PROOF_FOUNDER_3_BULLET_3}}</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ SLIDE 3: DELIVERABLES ═══ -->
+  <div class="slide surface" id="slide-2">
+    <div class="slide-body top">
+      <span class="label">Done-For-You Deliverables</span>
+      <h2 class="section-title">Built for <em>{{PROSPECT_NAME}}</em>. Not a template.</h2>
+      <p class="del-sub-centered">Expand each section to review the actual assets.</p>
+
+      <details>
+        <summary>
+          <div class="sum-left">
+            <div class="sum-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+            </div>
+            <span class="sum-title">Outreach Email Sequence</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sum-badge">{{EMAIL_COUNT}} Emails</span>
+            <div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+          </div>
+        </summary>
+        <div class="det-body">
+          <p>{{EMAIL_SEQUENCE_INTRO}} Every email under 100 words. One CTA only.</p>
+          <h4>Pod 1 — Get the click</h4>
+          <div class="email-card">
+            <div class="tag">Email 1 — Day 0</div>
+            <div class="subj">Subject: {{EMAIL_1_SUBJECT}}</div>
+            <div class="copy">{{EMAIL_1_BODY}}</div>
+          </div>
+          <div class="email-card">
+            <div class="tag">Email 2 — Day 3</div>
+            <div class="subj">Subject: (same thread)</div>
+            <div class="copy">{{EMAIL_2_BODY}}</div>
+          </div>
+          <div class="email-card">
+            <div class="tag">Email 3 — Day 6</div>
+            <div class="subj">Subject: (same thread)</div>
+            <div class="copy">{{EMAIL_3_BODY}}</div>
+          </div>
+          <h4>Pod 2 — Opened, no reply</h4>
+          <div class="email-card">
+            <div class="tag">Email 4 — Day 9</div>
+            <div class="subj">Subject: (same thread)</div>
+            <div class="copy">{{EMAIL_4_BODY}}</div>
+          </div>
+          <div class="email-card">
+            <div class="tag">Email 5 — Day 12</div>
+            <div class="subj">Subject: (same thread)</div>
+            <div class="copy">{{EMAIL_5_BODY}}</div>
+          </div>
+          <div class="email-card">
+            <div class="tag">Email 6 — Day 15</div>
+            <div class="subj">Subject: (same thread)</div>
+            <div class="copy">{{EMAIL_6_BODY}}</div>
+          </div>
+          <h4>Pod 3 — No open, new thread</h4>
+          <div class="email-card">
+            <div class="tag">Email 7 — Day 18</div>
+            <div class="subj">Subject: {{EMAIL_7_SUBJECT}}</div>
+            <div class="copy">{{EMAIL_7_BODY}}</div>
+          </div>
+          <div class="email-card">
+            <div class="tag">Email 8 — Day 21</div>
+            <div class="subj">Subject: (same thread)</div>
+            <div class="copy">{{EMAIL_8_BODY}}</div>
+          </div>
+          <div class="email-card">
+            <div class="tag">Email 9 — Day 24</div>
+            <div class="subj">Subject: (same thread)</div>
+            <div class="copy">{{EMAIL_9_BODY}}</div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <div class="sum-left">
+            <div class="sum-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <span class="sum-title">Ad Scripts + Concepts</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sum-badge">{{AD_COUNT}} Ads</span>
+            <div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+          </div>
+        </summary>
+        <div class="det-body">
+          <p>{{AD_INTRO}} Platform-compliant. Angle-specific. Built to convert cold traffic.</p>
+          <div class="ad-card">
+            <div class="tag">Ad 1 — {{AD_1_TYPE}}</div>
+            <div class="title">{{AD_1_HEADLINE}}</div>
+            <div class="copy">{{AD_1_COPY}}</div>
+          </div>
+          <div class="ad-card">
+            <div class="tag">Ad 2 — {{AD_2_TYPE}}</div>
+            <div class="title">{{AD_2_HEADLINE}}</div>
+            <div class="copy">{{AD_2_COPY}}</div>
+          </div>
+          <div class="ad-card">
+            <div class="tag">Ad 3 — {{AD_3_TYPE}}</div>
+            <div class="title">{{AD_3_HEADLINE}}</div>
+            <div class="copy">{{AD_3_COPY}}</div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <div class="sum-left">
+            <div class="sum-icon">
+              <svg viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+            </div>
+            <span class="sum-title">{{EMAIL_PLATFORM}} Sequences</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sum-badge">{{SEQ_COUNT}} Sequences</span>
+            <div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+          </div>
+        </summary>
+        <div class="det-body">
+          <p>{{SEQ_INTRO}} Written, built, handed off. Yours to keep.</p>
+          <h4>Sequence 1 — {{SEQ_1_NAME}}</h4>
+          <p>{{SEQ_1_DESC}}</p>
+          <h4>Sequence 2 — {{SEQ_2_NAME}}</h4>
+          <p>{{SEQ_2_DESC}}</p>
+          <h4>Sequence 3 — {{SEQ_3_NAME}}</h4>
+          <p>{{SEQ_3_DESC}}</p>
+          <h4>Sequence 4 — {{SEQ_4_NAME}}</h4>
+          <p>{{SEQ_4_DESC}}</p>
+          <h4>Sequence 5 — {{SEQ_5_NAME}}</h4>
+          <p>{{SEQ_5_DESC}}</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <div class="sum-left">
+            <div class="sum-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+            </div>
+            <span class="sum-title">Dedicated Landing Pages</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sum-badge">{{PAGE_COUNT}} Pages</span>
+            <div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+          </div>
+        </summary>
+        <div class="det-body">
+          <p>Paid traffic needs its own pages. One audience, one goal, one conversion path.</p>
+          <h4>Page 1 — {{PAGE_1_NAME}}</h4>
+          <p>{{PAGE_1_DESC}}</p>
+          <h4>Page 2 — {{PAGE_2_NAME}}</h4>
+          <p>{{PAGE_2_DESC}}</p>
+          <h4>Page 3 — {{PAGE_3_NAME}}</h4>
+          <p>{{PAGE_3_DESC}}</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <div class="sum-left">
+            <div class="sum-icon">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <span class="sum-title">{{CHANNEL}} Campaign Architecture</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sum-badge">{{AD_GROUP_COUNT}} Ad Groups</span>
+            <div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+          </div>
+        </summary>
+        <div class="det-body">
+          <p>{{CAMPAIGN_INTRO}}</p>
+          <h4>Target Keywords / Audiences</h4>
+          <ul>
+            <li>{{KW_1}}</li>
+            <li>{{KW_2}}</li>
+            <li>{{KW_3}}</li>
+            <li>{{KW_4}}</li>
+            <li>{{KW_5}}</li>
+          </ul>
+          <h4>Structure</h4>
+          <p>{{CAMPAIGN_STRUCTURE}}</p>
+          <h4>Budget Estimate</h4>
+          <p>{{BUDGET_ESTIMATE}}</p>
+        </div>
+      </details>
+    </div>
+  </div>
+
+
+  <!-- ═══ SLIDE 4: AUDIT ═══ -->
+  <div class="slide" id="slide-3">
+    <div class="slide-body top">
+      <span class="label">Revenue Leak Audit</span>
+      <h2 class="section-title">Where <em>{{PROSPECT_NAME}}</em> is losing money right now.</h2>
+      <p class="section-sub">{{AUDIT_INTRO_P1}}</p>
+
+      <div class="audit-stats">
+        <div class="audit-stat-card">
+          <div class="val">{{AUDIT_STAT_1_VAL}}</div>
+          <div class="desc">{{AUDIT_STAT_1_DESC}}</div>
+        </div>
+        <div class="audit-stat-card">
+          <div class="val">{{AUDIT_STAT_2_VAL}}</div>
+          <div class="desc">{{AUDIT_STAT_2_DESC}}</div>
+        </div>
+        <div class="audit-stat-card">
+          <div class="val">{{AUDIT_STAT_3_VAL}}</div>
+          <div class="desc">{{AUDIT_STAT_3_DESC}}</div>
+        </div>
+      </div>
+
+      <table class="audit-table">
+        <thead>
+          <tr><th>Channel / Asset</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>{{AUDIT_ROW_1_ASSET}}</td><td class="{{AUDIT_ROW_1_CLASS}}">{{AUDIT_ROW_1_STATUS}}</td></tr>
+          <tr><td>{{AUDIT_ROW_2_ASSET}}</td><td class="{{AUDIT_ROW_2_CLASS}}">{{AUDIT_ROW_2_STATUS}}</td></tr>
+          <tr><td>{{AUDIT_ROW_3_ASSET}}</td><td class="{{AUDIT_ROW_3_CLASS}}">{{AUDIT_ROW_3_STATUS}}</td></tr>
+          <tr><td>{{AUDIT_ROW_4_ASSET}}</td><td class="{{AUDIT_ROW_4_CLASS}}">{{AUDIT_ROW_4_STATUS}}</td></tr>
+          <tr><td>{{AUDIT_ROW_5_ASSET}}</td><td class="{{AUDIT_ROW_5_CLASS}}">{{AUDIT_ROW_5_STATUS}}</td></tr>
+          <tr><td>{{AUDIT_ROW_6_ASSET}}</td><td class="{{AUDIT_ROW_6_CLASS}}">{{AUDIT_ROW_6_STATUS}}</td></tr>
+          <tr><td>{{AUDIT_ROW_7_ASSET}}</td><td class="{{AUDIT_ROW_7_CLASS}}">{{AUDIT_ROW_7_STATUS}}</td></tr>
+        </tbody>
+      </table>
+
+      <div class="gap-grid">
+        <div class="gap-card">
+          <h4>{{GAP_1_TITLE}}</h4>
+          <p>{{GAP_1_BODY}}</p>
+        </div>
+        <div class="gap-card">
+          <h4>{{GAP_2_TITLE}}</h4>
+          <p>{{GAP_2_BODY}}</p>
+        </div>
+        <div class="gap-card">
+          <h4>{{GAP_3_TITLE}}</h4>
+          <p>{{GAP_3_BODY}}</p>
+        </div>
+        <div class="gap-card">
+          <h4>{{GAP_4_TITLE}}</h4>
+          <p>{{GAP_4_BODY}}</p>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="margin-bottom:14px;">What we build. <em>Phase by phase.</em></h2>
+      <p class="section-sub">{{AUDIT_INTRO_P2}}</p>
+
+      <div class="phase-list">
+        <div class="phase-card">
+          <span class="phase-num">Phase 1 — {{PHASE_1_TIMELINE}}</span>
+          <div class="phase-title">{{PHASE_1_TITLE}}</div>
+          <div class="phase-body"><p>{{PHASE_1_BODY}}</p></div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">Phase 2 — {{PHASE_2_TIMELINE}}</span>
+          <div class="phase-title">{{PHASE_2_TITLE}}</div>
+          <div class="phase-body"><p>{{PHASE_2_BODY}}</p></div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">Phase 3 — {{PHASE_3_TIMELINE}}</span>
+          <div class="phase-title">{{PHASE_3_TITLE}}</div>
+          <div class="phase-body"><p>{{PHASE_3_BODY}}</p></div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">Phase 4 — {{PHASE_4_TIMELINE}}</span>
+          <div class="phase-title">{{PHASE_4_TITLE}}</div>
+          <div class="phase-body"><p>{{PHASE_4_BODY}}</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ SLIDE 5: OFFER + GUARANTEE ═══ -->
+  <div class="slide surface" id="slide-4">
+    <div class="slide-body top">
+      <span class="label">The Offer</span>
+      <h2 class="section-title">What's included. What it costs. <em>What we guarantee.</em></h2>
+
+      <table class="pricing-table">
+        <colgroup>
+          <col style="width:22%">
+          <col style="width:56%">
+          <col style="width:22%">
+        </colgroup>
+        <thead>
+          <tr><th>Component</th><th>What's Included</th><th>Price</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Setup — one time</strong></td>
+            <td>{{SETUP_INCLUDES}}</td>
+            <td class="price-val">{{SETUP_PRICE}}</td>
+          </tr>
+          <tr>
+            <td><strong>Monthly management</strong></td>
+            <td>{{MONTHLY_INCLUDES}}</td>
+            <td class="price-val">{{MONTHLY_PRICE}}</td>
+          </tr>
+          <tr>
+            <td><strong>Ad spend</strong></td>
+            <td>Paid directly to {{AD_PLATFORM}}. Not to us.</td>
+            <td class="price-val">{{AD_SPEND_RANGE}}</td>
+          </tr>
+          <tr>
+            <td><strong>Performance</strong></td>
+            <td>{{PERFORMANCE_DESC}} Strictly attributed. If it didn't come through our system, we don't claim it.</td>
+            <td class="price-val">{{PERFORMANCE_RATE}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="guarantee-box">
+        <h3>10+ new {{UNIT}} a month. 60 days. Or we work for free.</h3>
+        <p>If we don't hit that within 60 days of launch, we keep working at no additional cost until we do.</p>
+        <p>Every asset we build — pages, ad creative, email sequences, automations — is yours. You keep it regardless.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ SLIDE 6: FINAL CTA ═══ -->
+  <div class="slide" id="slide-5">
+    <div class="slide-body" style="text-align:center;">
+      <span class="label">Next Step</span>
+      <h2 class="cta-h2">30 minutes. No pitch. <em>No commitment.</em></h2>
+      <p class="cta-sub">Ask anything. We'll tell you straight whether this makes sense for {{PROSPECT_NAME}}.</p>
+      <a href="{{CALENDLY_URL}}" target="_blank" class="btn btn-accent" style="font-size:1rem;padding:16px 40px;">Book a 30-Minute Call</a>
+      <p class="cta-note">Or email: <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p>
+
+      <div class="cta-footer">
+        <p><strong>Marco Garcia &amp; Francis</strong> &nbsp;&bull;&nbsp; Ground Up Agency &nbsp;&bull;&nbsp; <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p>
+        <p style="margin-top:5px;color:#4a5568;">Built specifically for {{PROSPECT_NAME}}.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- Global fixed next-slide arrow -->
+<button id="next-hint-btn" onclick="nextSlide()" title="Next slide">
+  <svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg>
+</button>
+
+<script>
+  const LOOM_ID = '{{LOOM_ID}}';
+  const SLIDE_LABELS = ['Intro', 'Proof & Results', 'What We Already Built You', 'Your Audit', 'The Offer', 'Book a Call'];
+
+  let current = 0;
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+
+  // Build dots with TOC labels
+  const dotsContainer = document.getElementById('deck-dots');
+  slides.forEach((_, i) => {
+    const row = document.createElement('div');
+    row.className = 'deck-dot-row' + (i === 0 ? ' toc-active' : '');
+    row.dataset.index = i;
+
+    const lbl = document.createElement('span');
+    lbl.className = 'deck-dot-lbl';
+    lbl.textContent = SLIDE_LABELS[i] || '';
+
+    const dot = document.createElement('div');
+    dot.className = 'deck-dot' + (i === 0 ? ' active' : '');
+    dot.title = SLIDE_LABELS[i] || '';
+    dot.onclick = () => goToSlide(i);
+
+    row.appendChild(lbl);
+    row.appendChild(dot);
+    dotsContainer.appendChild(row);
+  });
+
+  function updateUI() {
+    // Position slides
+    slides.forEach((slide, i) => {
+      slide.style.transform = i < current ? 'translateY(-100%)' :
+                              i > current ? 'translateY(100%)' :
+                              'translateY(0)';
+    });
+    // Dots + rows
+    document.querySelectorAll('.deck-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+    document.querySelectorAll('.deck-dot-row').forEach((r, i) => {
+      r.classList.toggle('toc-active', i === current);
+    });
+    // Counter
+    document.getElementById('slide-counter').textContent = (current + 1) + ' / ' + total;
+    // Arrow states
+    document.getElementById('btn-prev').disabled = current === 0;
+    document.getElementById('btn-next').disabled = current === total - 1;
+    // Show global next hint only when not on last slide
+    const nhb = document.getElementById('next-hint-btn');
+    if (nhb) nhb.style.display = current === total - 1 ? 'none' : 'flex';
+  }
+
+  function goToSlide(n) {
+    if (n < 0 || n >= total) return;
+    current = n;
+    updateUI();
+  }
+
+  function nextSlide() { goToSlide(current + 1); }
+  function prevSlide() { goToSlide(current - 1); }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  { e.preventDefault(); prevSlide(); }
+  });
+
+  // VSL loader
+  function loadVSL() {
+    if (!LOOM_ID || LOOM_ID === '{{LOOM_ID}}') { alert('Add your Loom video ID.'); return; }
+    document.getElementById('vsl-placeholder').style.display = 'none';
+    const iframe = document.getElementById('vsl-iframe');
+    iframe.src = 'https://www.loom.com/embed/' + LOOM_ID + '?autoplay=1&hide_owner=true&hide_share=true&hide_title=true';
+    iframe.style.cssText = 'display:block;position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:12px;';
+  }
+
+  // Init
+  updateUI();
+</script>
+
+</body>
+</html>
