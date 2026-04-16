@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--
+    D100 VSL TEMPLATE — Ground Up Agency
+    PROSPECT: Interview Kickstart / Ryan Valles
+    NICHE: tech interview prep / software training
+    UNIT: enrolled students
+    AUDIT DATE: April 2026
+    TODO: Replace {{LOOM_ID}}, {{CALENDLY_URL}}, {{EMAIL}} before sending
+  -->
+  <title>Interview Kickstart — Ground Up Agency</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0b1120;
+      --surface:    #111d2e;
+      --surface2:   #1a2b3d;
+      --border:     #243549;
+      --text:       #e4eaf2;
+      --text-dim:   #8b9bb5;
+      --accent:     #0EA5E9;
+      --accent-dim: #0284C7;
+      --accent-glow: rgba(14,165,233,.15);
+      --green:      #34d399;
+      --red:        #f87171;
+      --yellow:     #fbbf24;
+      --blue:       #38bdf8;
+      --green-bg:   rgba(52,211,153,.08);
+      --red-bg:     rgba(248,113,113,.08);
+      --yellow-bg:  rgba(251,191,36,.08);
+      --blue-bg:    rgba(56,189,248,.08);
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    /* ─── DECK CONTAINER ─── */
+    .deck {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ─── SLIDES ─── */
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+      background: var(--bg);
+    }
+    .slide.surface { background: var(--surface); }
+
+    .slide-body {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 56px 40px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .slide-body.top { justify-content: flex-start; padding-top: 60px; }
+
+    @media (max-width: 640px) {
+      .slide-body { padding: 40px 20px; }
+    }
+
+    /* ─── DECK NAVIGATION UI ─── */
+    .deck-ui {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .deck-dots {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 4px;
+    }
+    .deck-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .deck-dot.active {
+      background: var(--accent);
+      transform: scale(1.4);
+    }
+
+    .deck-arrow {
+      width: 34px; height: 34px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      color: var(--text-dim);
+    }
+    .deck-arrow:hover { border-color: var(--accent); color: var(--accent); }
+    .deck-arrow svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .deck-arrow:disabled { opacity: 0.25; cursor: default; }
+    .deck-arrow:disabled:hover { border-color: var(--border); color: var(--text-dim); }
+
+    .slide-counter {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Brand watermark */
+    .deck-brand {
+      position: fixed;
+      top: 20px;
+      left: 28px;
+      z-index: 200;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .deck-brand span { color: var(--accent); }
+
+    /* ─── LABEL ─── */
+    .label {
+      display: block; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 12px;
+      text-align: center;
+    }
+
+    /* ─── HEADINGS ─── */
+    h2.section-title {
+      font-size: clamp(1.3rem, 2.8vw, 1.9rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    h2.section-title em { font-style: normal; color: var(--accent); }
+    .section-sub {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      text-align: center;
+      max-width: 580px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-block; text-decoration: none;
+      border-radius: 8px; font-size: 0.88rem; font-weight: 600;
+      letter-spacing: 0.03em; transition: opacity 0.2s, background 0.2s;
+      padding: 14px 32px;
+    }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: var(--accent-dim); }
+    .btn-surface { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-surface:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-ghost { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─── SLIDE 1: HERO ─── */
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent-glow); border: 1px solid rgba(14,165,233,.3);
+      border-radius: 20px; padding: 5px 14px; margin-bottom: 20px;
+      font-size: 0.75rem; font-weight: 600; color: var(--accent);
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .hero-h1 {
+      font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+      font-weight: 800; line-height: 1.1;
+      color: var(--text); max-width: 760px; margin: 0 auto 12px;
+      letter-spacing: -0.03em; text-align: center;
+    }
+    .hero-h1 em { font-style: normal; color: var(--accent); }
+    .hero-sub {
+      font-size: 1rem; color: var(--text-dim);
+      max-width: 520px; line-height: 1.65; margin: 0 auto 24px;
+      text-align: center;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 600; }
+
+    /* VSL in hero */
+    .vsl-embed {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 12px; box-shadow: 0 16px 56px rgba(0,0,0,0.5), 0 0 0 1px var(--border);
+      margin-bottom: 24px;
+    }
+    .vsl-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px; }
+    .vsl-placeholder {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--surface2); border-radius: 12px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; cursor: pointer;
+    }
+    .vsl-placeholder:hover .play-btn { transform: scale(1.06); }
+    .play-btn {
+      width: 72px; height: 72px; background: var(--accent); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 28px rgba(14,165,233,0.45); transition: transform 0.2s;
+    }
+    .play-btn svg { width: 26px; height: 26px; fill: #fff; margin-left: 4px; }
+    .vsl-placeholder p { font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+    /* ─── SLIDE 2: SOCIAL PROOF ─── */
+    .proof-stats { display: flex; gap: 0; flex-wrap: wrap; margin: 0 0 32px; }
+    .proof-stat {
+      flex: 1; min-width: 120px;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 18px 16px; text-align: center;
+    }
+    .proof-stat:first-child { border-radius: 10px 0 0 10px; }
+    .proof-stat:last-child  { border-radius: 0 10px 10px 0; }
+    .proof-stat + .proof-stat { border-left: none; }
+    .proof-stat .num {
+      font-size: 1.8rem; font-weight: 800; color: var(--accent);
+      line-height: 1; margin-bottom: 6px; letter-spacing: -0.03em;
+    }
+    .proof-stat .lbl { font-size: 0.75rem; color: var(--text-dim); line-height: 1.4; }
+
+    .founder-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .founder-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: border-color 0.2s;
+    }
+    .founder-card:hover { border-color: rgba(14,165,233,.4); }
+
+    .founder-banner {
+      width: 100%; aspect-ratio: 16/8; overflow: hidden;
+      background: var(--surface2); position: relative;
+    }
+    .founder-banner img {
+      width: 100%; height: 100%; object-fit: contain; object-position: center; display: block;
+      cursor: zoom-in;
+    }
+    .founder-banner-placeholder {
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    .founder-card-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+    .founder-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .founder-name { font-size: 1.05rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .founder-ig-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.78rem; color: var(--accent); text-decoration: none;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .founder-ig-link:hover { color: var(--blue); }
+    .founder-ig-link svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+
+    .founder-proof {
+      background: var(--surface2); border-radius: 10px; overflow: hidden;
+      min-height: 180px; display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .founder-proof img { width: 100%; height: auto; display: block; max-height: 280px; object-fit: contain; cursor: zoom-in; }
+    .founder-proof-placeholder {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .founder-proof-placeholder svg { opacity: 0.25; }
+
+    .founder-bullets { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .founder-bullets li {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 0.85rem; color: var(--text-dim); line-height: 1.55;
+    }
+    .founder-bullets li::before {
+      content: ''; display: block; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0; margin-top: 7px;
+    }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.88); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; cursor: zoom-out;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img {
+      max-width: min(92vw, 960px); max-height: 88vh;
+      object-fit: contain; border-radius: 10px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+      pointer-events: none;
+    }
+    #lightbox-close {
+      position: absolute; top: 20px; right: 24px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,.12); border: none; color: #fff;
+      font-size: 18px; line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #lightbox-close:hover { background: rgba(255,255,255,.22); }
+
+    /* ─── SLIDE 3: DELIVERABLES ─── */
+    .del-sub-centered { font-size: 0.9rem; color: var(--text-dim); text-align: center; margin-bottom: 28px; line-height: 1.6; }
+
+    details { margin-bottom: 6px; }
+    summary {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px; cursor: pointer; list-style: none;
+      user-select: none; transition: background 0.15s, border-color 0.15s;
+    }
+    summary:hover { background: rgba(14,165,233,.04); border-color: rgba(14,165,233,.3); }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { border-radius: 10px 10px 0 0; border-bottom: 1px solid var(--border); }
+    .sum-left { display: flex; align-items: center; gap: 12px; }
+    .sum-icon {
+      width: 28px; height: 28px; border-radius: 7px; background: var(--accent-glow);
+      border: 1px solid rgba(14,165,233,.25);
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    }
+    .sum-icon svg { width: 13px; height: 13px; stroke: var(--accent); fill: none; stroke-width: 2; }
+    .sum-title { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .sum-badge {
+      font-size: 0.68rem; color: var(--accent);
+      background: var(--accent-glow); border: 1px solid rgba(14,165,233,.25);
+      padding: 2px 8px; border-radius: 20px; font-weight: 600; white-space: nowrap;
+    }
+    .chevron { transition: transform 0.25s; }
+    .chevron svg { width: 14px; height: 14px; stroke: var(--text-dim); fill: none; stroke-width: 2; }
+    details[open] .chevron { transform: rotate(180deg); }
+
+    .det-body {
+      background: var(--bg); border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 10px 10px; padding: 20px 18px;
+    }
+    .det-body p  { font-size: 0.88rem; color: var(--text-dim); line-height: 1.75; margin-bottom: 12px; }
+    .det-body p:last-child { margin-bottom: 0; }
+    .det-body strong { color: var(--text); }
+    .det-body h4 {
+      font-size: 0.68rem; font-weight: 700; color: var(--accent);
+      letter-spacing: 0.06em; text-transform: uppercase; margin: 16px 0 8px;
+      text-align: left;
+    }
+    .det-body h4:first-child { margin-top: 0; }
+    .det-body ul { padding-left: 18px; }
+    .det-body li { font-size: 0.88rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 4px; }
+
+    .email-card {
+      background: var(--surface); border-left: 2px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 12px 14px; margin: 8px 0;
+    }
+    .email-card .tag   { font-size: 0.66rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+    .email-card .subj  { font-size: 0.83rem; font-weight: 600; color: var(--text); margin-bottom: 7px; }
+    .email-card .copy  { font-size: 0.83rem; color: var(--text-dim); line-height: 1.75; white-space: pre-wrap; }
+
+    .ad-card {
+      background: var(--surface); border-top: 2px solid var(--accent);
+      border-radius: 0 0 6px 6px; padding: 12px 14px; margin: 8px 0;
+    }
+    .ad-card .tag   { font-size: 0.66rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+    .ad-card .title { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 7px; }
+    .ad-card .copy  { font-size: 0.83rem; color: var(--text-dim); line-height: 1.75; white-space: pre-wrap; }
+
+    /* ─── SLIDE 4: AUDIT ─── */
+    .audit-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin: 20px 0 32px; }
+    .audit-stat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 18px 14px; border-left: 3px solid var(--red);
+    }
+    .audit-stat-card .val { font-size: 1.8rem; font-weight: 800; color: var(--red); line-height: 1; margin-bottom: 7px; letter-spacing: -0.03em; }
+    .audit-stat-card .desc { font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; }
+
+    .audit-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 28px; border-radius: 8px; overflow: hidden; }
+    .audit-table th {
+      background: var(--surface2); color: var(--text-dim); text-align: left;
+      padding: 10px 14px; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .audit-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .audit-table tr:last-child td { border-bottom: none; }
+    .audit-table tr:hover td { background: rgba(14,165,233,.03); }
+    .s-none    { color: var(--red);    font-weight: 700; }
+    .s-ok      { color: var(--green);  font-weight: 700; }
+    .s-partial { color: var(--yellow); font-weight: 700; }
+
+    .gap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-bottom: 32px; }
+    .gap-card {
+      border-left: 3px solid var(--red); background: var(--surface);
+      border-radius: 0 8px 8px 0; padding: 14px 12px;
+    }
+    .gap-card h4 { font-size: 0.86rem; font-weight: 700; color: var(--text); margin-bottom: 6px; text-align: left; }
+    .gap-card p  { font-size: 0.83rem; color: var(--text-dim); line-height: 1.65; }
+
+    .phase-list { display: flex; flex-direction: column; gap: 8px; }
+    .phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 16px; }
+    .phase-num   { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; display: block; }
+    .phase-title { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 7px; }
+    .phase-body  { font-size: 0.83rem; color: var(--text-dim); line-height: 1.7; }
+    .phase-body ul { padding-left: 18px; margin-top: 6px; }
+    .phase-body li { margin-bottom: 4px; }
+    .phase-body p  { margin-bottom: 6px; }
+
+    /* ─── SLIDE 5: OFFER ─── */
+    .pricing-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 24px 0; }
+    .pricing-table th {
+      background: var(--surface2); text-align: left; padding: 10px 14px;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-dim); border-bottom: 1px solid var(--border);
+    }
+    .pricing-table td { padding: 13px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+    .pricing-table tr:last-child td { border-bottom: none; }
+    .pricing-table tr:hover td { background: rgba(14,165,233,.03); }
+    .price-val { font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+    .guarantee-box {
+      background: var(--bg); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0; padding: 24px 22px; margin-top: 20px;
+    }
+    .guarantee-box h3 {
+      font-size: 1.1rem; font-weight: 700; color: var(--text);
+      margin-bottom: 10px; line-height: 1.3; text-align: left;
+    }
+    .guarantee-box p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.75; margin-bottom: 8px; }
+    .guarantee-box p:last-child { margin-bottom: 0; }
+
+    /* ─── SLIDE 6: FINAL CTA ─── */
+    .cta-h2 {
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem); font-weight: 800;
+      color: var(--text); line-height: 1.15; margin-bottom: 12px;
+      letter-spacing: -0.02em; text-align: center;
+    }
+    .cta-h2 em { font-style: normal; color: var(--accent); }
+    .cta-sub { font-size: 1rem; color: var(--text-dim); line-height: 1.7; max-width: 480px; margin: 0 auto 28px; text-align: center; }
+    .cta-note { font-size: 0.8rem; color: var(--text-dim); margin-top: 14px; text-align: center; }
+    .cta-note a { color: var(--accent); text-decoration: none; }
+    .cta-note a:hover { text-decoration: underline; }
+
+    .cta-footer { margin-top: 40px; text-align: center; font-size: 0.78rem; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 20px; }
+    .cta-footer strong { color: var(--text); }
+    .cta-footer a { color: var(--accent); text-decoration: none; }
+
+    /* ─── DECK-UI TOC LABELS ─── */
+    .deck-ui-title {
+      font-size: 9px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-dim);
+      text-align: right; margin-bottom: 8px; white-space: nowrap;
+    }
+    .deck-dot-row {
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+    }
+    .deck-dot-lbl {
+      font-size: 10px; color: var(--text-dim); white-space: nowrap;
+      text-align: right; line-height: 1;
+      max-width: 0; overflow: hidden; opacity: 0;
+      transition: max-width .25s ease, opacity .2s ease;
+    }
+    .deck-ui:hover .deck-dot-lbl { max-width: 140px; opacity: 1; }
+    .deck-dot-row.toc-active .deck-dot-lbl { max-width: 140px; opacity: 1; color: var(--accent); }
+
+    /* ─── BIG NEXT ARROW ─── */
+    #next-hint-btn {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      width: 52px; height: 52px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color .2s, background .2s, box-shadow .2s;
+      color: var(--text-dim); z-index: 150;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      animation: bounceHint 2.5s ease-in-out 1.5s 3;
+    }
+    #next-hint-btn:hover {
+      border-color: var(--accent); color: var(--accent);
+      background: var(--accent-glow); box-shadow: 0 4px 24px rgba(14,165,233,0.2);
+    }
+    #next-hint-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+    @keyframes bounceHint {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── HERO PROOF STRIP ─── */
+    .hero-proof-strip {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      margin-top: 22px; gap: 0;
+    }
+    .hero-proof-item {
+      padding: 10px 18px; border: 1px solid var(--border);
+      text-align: center; background: var(--surface);
+    }
+    .hero-proof-item:first-child { border-radius: 8px 0 0 8px; }
+    .hero-proof-item:last-child  { border-radius: 0 8px 8px 0; }
+    .hero-proof-item + .hero-proof-item { border-left: none; }
+    .hero-proof-num { font-size: 1.25rem; font-weight: 800; color: var(--accent); letter-spacing: -.02em; line-height: 1; }
+    .hero-proof-lbl { font-size: 0.68rem; color: var(--text-dim); margin-top: 4px; line-height: 1.3; }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 640px) {
+      .deck-ui {
+        position: fixed;
+        right: 0; left: 0; top: auto; bottom: 0;
+        transform: none;
+        flex-direction: row; justify-content: center; align-items: center;
+        background: var(--surface) !important;
+        border-top: 1px solid var(--border);
+        box-shadow: 0 -4px 24px rgba(0,0,0,0.5);
+        padding: 10px 20px; gap: 16px; width: 100%;
+        height: 58px;
+        z-index: 200;
+      }
+      .deck-ui-title { display: none; }
+      .deck-dots { flex-direction: row; gap: 10px; margin-bottom: 0; }
+      .deck-dot { width: 8px; height: 8px; }
+      .deck-dot-lbl { display: none; }
+      .slide-counter { font-size: 0.72rem; order: -1; }
+      .deck-arrow { width: 38px; height: 38px; }
+      .slide-body { padding: 56px 18px 80px; }
+      .slide-body.top { padding-top: 56px; }
+      #next-hint-btn { bottom: 70px; }
+      .audit-table, .pricing-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .hero-proof-strip { gap: 8px; }
+      .hero-proof-item { flex: 1; min-width: 80px; border-radius: 8px !important; border: 1px solid var(--border) !important; padding: 8px 10px; }
+      .hero-proof-num { font-size: 1.05rem; }
+      .hero-proof-lbl { font-size: 0.62rem; }
+      .proof-stats { gap: 8px; }
+      .proof-stat { flex: 1 1 40%; border-radius: 8px !important; border: 1px solid var(--border) !important; }
+      .proof-stat + .proof-stat { border-left: 1px solid var(--border) !important; }
+      .gap-grid { grid-template-columns: 1fr; }
+      .phase-card { padding: 16px; }
+      .founder-grid { grid-template-columns: 1fr; }
+      nav[style*="inline-block"] { display: block !important; text-align: center; }
+      nav[style*="inline-block"] ol li { justify-content: center; }
+      .hero-h1 { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Brand watermark -->
+<div class="deck-brand">Ground Up <span>Agency</span></div>
+
+<!-- Deck navigation UI -->
+<div class="deck-ui">
+  <p class="deck-ui-title">Contents</p>
+  <div class="deck-dots" id="deck-dots"></div>
+  <div class="slide-counter" id="slide-counter">1 / 6</div>
+  <button class="deck-arrow" id="btn-prev" onclick="prevSlide()" title="Previous (↑)">
+    <svg viewBox="0 0 24 24"><polyline points="18,15 12,9 6,15"/></svg>
+  </button>
+  <button class="deck-arrow" id="btn-next" onclick="nextSlide()" title="Next (↓)">
+    <svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg>
+  </button>
+</div>
+
+
+<div class="deck" id="deck">
+
+  <!-- ═══ SLIDE 1: HERO + VSL ═══ -->
+  <div class="slide surface" id="slide-0">
+    <div class="slide-body" style="text-align:center;">
+      <div style="display:flex;justify-content:center;margin-bottom:20px;">
+        <span class="hero-eyebrow">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Custom Growth Package
+        </span>
+      </div>
+      <h1 class="hero-h1">
+        10+ new enrolled students per month for <em>Interview Kickstart</em>. Guaranteed.
+      </h1>
+      <p class="hero-sub">
+        <strong>60 days or we work for free.</strong> Every asset we build stays with you.
+      </p>
+
+      <!-- VSL above buttons -->
+      <div class="vsl-embed" style="margin-bottom:24px;">
+        <div class="vsl-placeholder" id="vsl-placeholder" onclick="loadVSL()">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" style="fill:#fff;stroke:none;"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+          <p>Click to play</p>
+        </div>
+        <iframe id="vsl-iframe" src="" style="display:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+
+      <div class="hero-btns">
+        <a href="#" onclick="goToSlide(5);return false;" class="btn btn-accent">Book a Call</a>
+      </div>
+
+      <!-- SOCIAL PROOF STRIP -->
+      <div class="hero-proof-strip">
+        <div class="hero-proof-item">
+          <div class="hero-proof-num">$1M+</div>
+          <div class="hero-proof-lbl">generated for creators &amp; B2C businesses</div>
+        </div>
+        <div class="hero-proof-item">
+          <div class="hero-proof-num">$4B+</div>
+          <div class="hero-proof-lbl">luxury real estate value marketed</div>
+        </div>
+        <div class="hero-proof-item">
+          <div class="hero-proof-num">4M+</div>
+          <div class="hero-proof-lbl">total followers across clients</div>
+        </div>
+      </div>
+
+      <!-- TABLE OF CONTENTS -->
+      <nav style="margin-top:28px;border-top:1px solid var(--border);padding-top:20px;display:inline-block;text-align:left;">
+        <p style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px;">Table of Contents</p>
+        <ol style="list-style:none;display:flex;flex-direction:column;gap:9px;">
+          <li style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);font-variant-numeric:tabular-nums;min-width:16px;">01</span>
+            <a href="#" onclick="goToSlide(1);return false;" style="font-size:13px;color:var(--text-dim);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">Proof &amp; Results</a>
+          </li>
+          <li style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);font-variant-numeric:tabular-nums;min-width:16px;">02</span>
+            <a href="#" onclick="goToSlide(2);return false;" style="font-size:13px;color:var(--text-dim);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">What We Already Built You</a>
+          </li>
+          <li style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);font-variant-numeric:tabular-nums;min-width:16px;">03</span>
+            <a href="#" onclick="goToSlide(3);return false;" style="font-size:13px;color:var(--text-dim);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">Your Audit</a>
+          </li>
+          <li style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:9px;color:rgba(255,255,255,0.2);font-variant-numeric:tabular-nums;min-width:16px;">04</span>
+            <a href="#" onclick="goToSlide(4);return false;" style="font-size:13px;color:var(--text-dim);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">The Offer</a>
+          </li>
+        </ol>
+      </nav>
+
+    </div>
+  </div>
+
+
+  <!-- ═══ SLIDE 2: SOCIAL PROOF ═══ -->
+  <div class="slide" id="slide-1">
+    <div class="slide-body top">
+      <span class="label">Results From Real Businesses</span>
+      <h2 class="section-title">Not case studies. <em>Actual clients, actual numbers.</em></h2>
+      <p class="section-sub">Built in the most competitive direct response environment there is. Applied here.</p>
+
+      <div class="proof-stats">
+        <div class="proof-stat">
+          <div class="num">$1M+</div>
+          <div class="lbl">Generated for creators &amp; B2C businesses online</div>
+        </div>
+        <div class="proof-stat">
+          <div class="num">$4B+</div>
+          <div class="lbl">Luxury real estate value marketed</div>
+        </div>
+        <div class="proof-stat">
+          <div class="num">4M+</div>
+          <div class="lbl">Total followers across clients</div>
+        </div>
+        <div class="proof-stat">
+          <div class="num">3 yrs</div>
+          <div class="lbl">At Meta on Newsfeed infrastructure</div>
+        </div>
+      </div>
+
+      <div class="founder-grid">
+
+        <!-- CARD 1 — Ben Seda -->
+        <div class="founder-card">
+          <div class="founder-banner">
+            <img src="https://mxwallz.github.io/d100-pages/assets/ben_profile.png" alt="Benjamin Seda" />
+          </div>
+          <div class="founder-card-body">
+            <div class="founder-header">
+              <div class="founder-name">Benjamin Seda</div>
+              <a href="https://www.instagram.com/realbenjaminseda" target="_blank" rel="noopener" class="founder-ig-link">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                @realbenjaminseda
+              </a>
+            </div>
+            <div class="founder-proof">
+              <img src="https://mxwallz.github.io/d100-pages/assets/benji_proof.png" alt="Results — Benjamin Seda" />
+            </div>
+            <ul class="founder-bullets">
+              <li>Attributed $100K+ in generated revenue</li>
+              <li>Content series planned and executed end-to-end</li>
+              <li>Funnel development + sales ops buildout</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- CARD 2 — Darius -->
+        <div class="founder-card">
+          <div class="founder-banner">
+            <img src="https://mxwallz.github.io/d100-pages/assets/darius_profile.png" alt="Darius" />
+          </div>
+          <div class="founder-card-body">
+            <div class="founder-header">
+              <div class="founder-name">Darius</div>
+              <a href="https://www.instagram.com/dariusworkout" target="_blank" rel="noopener" class="founder-ig-link">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                @dariusworkout
+              </a>
+            </div>
+            <div class="founder-proof">
+              <img src="https://mxwallz.github.io/d100-pages/assets/darius_proof.png" alt="Results — Darius" />
+            </div>
+            <ul class="founder-bullets">
+              <li>$0 to $10K in revenue in the first month</li>
+              <li>Offer development + funnel buildout from scratch</li>
+              <li>Content strategy + paid ads execution</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- CARD 3 — Zack Gray -->
+        <div class="founder-card">
+          <div class="founder-banner">
+            <img src="https://mxwallz.github.io/d100-pages/assets/zack_profile.png" alt="Zack Gray" />
+          </div>
+          <div class="founder-card-body">
+            <div class="founder-header">
+              <div class="founder-name">Zack Gray</div>
+              <a href="https://www.instagram.com/zackgray" target="_blank" rel="noopener" class="founder-ig-link">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                @zackgray
+              </a>
+            </div>
+            <div class="founder-proof">
+              <img src="https://mxwallz.github.io/d100-pages/assets/zackgray_proof.png" alt="Results — Zack Gray" />
+            </div>
+            <ul class="founder-bullets">
+              <li>Webinar funnel built and launched end-to-end</li>
+              <li>Content strategy + paid ads management</li>
+              <li>Sales ops + funnel development</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- CARD 4 — Ivy Brothers -->
+        <div class="founder-card">
+          <div class="founder-banner">
+            <img src="https://mxwallz.github.io/d100-pages/assets/ivy_brothers_profile.png" alt="Ivy Brothers" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="founder-banner-placeholder" style="display:none">Ivy Brothers</div>
+          </div>
+          <div class="founder-card-body">
+            <div class="founder-header">
+              <div class="founder-name">Ivy Brothers</div>
+              <a href="https://www.instagram.com/ivybrothersofficial/" target="_blank" rel="noopener" class="founder-ig-link">
+                <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                @ivybrothersofficial
+              </a>
+            </div>
+            <div class="founder-proof">
+              <img src="https://mxwallz.github.io/d100-pages/assets/ivy_brothers_proof.png" alt="Results — Ivy Brothers" onerror="this.parentElement.innerHTML='<div class=\'founder-proof-placeholder\'><svg width=\'26\' height=\'26\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><path d=\'M3 9h18\'/><path d=\'M9 21V9\'/></svg>Add proof screenshot</div>'" />
+            </div>
+            <ul class="founder-bullets">
+              <li>Added $40K+ in revenue in the first month</li>
+              <li>Marketing + funnel development from the ground up</li>
+              <li>Sales ops + backend ops buildout</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ SLIDE 3: DELIVERABLES ═══ -->
+  <div class="slide surface" id="slide-2">
+    <div class="slide-body top">
+      <span class="label">Done-For-You Deliverables</span>
+      <h2 class="section-title">Built for <em>Interview Kickstart</em>. Not a template.</h2>
+      <p class="del-sub-centered">Expand each section to review the actual assets.</p>
+
+      <!-- EMAIL BROADCAST SEQUENCE -->
+      <details>
+        <summary>
+          <div class="sum-left">
+            <div class="sum-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+            </div>
+            <span class="sum-title">Broadcast Email Sequence</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sum-badge">5 Emails</span>
+            <div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+          </div>
+        </summary>
+        <div class="det-body">
+          <p>Five broadcast emails for engineers who opted in but haven't enrolled. Direct response format. One idea per email. One CTA only. Written to go out to your full list.</p>
+          <h4>Email 1 — The Hook</h4>
+          <div class="email-card">
+            <div class="tag">Broadcast — Send Day 0</div>
+            <div class="subj">Subject: Your tech skills have a shelf life.</div>
+            <div class="copy">Most software engineers find out their skills are stale the same way.
+
+A performance review. A rejection from a company they thought was a reach. A junior engineer on the team doing in two hours what used to take them a day.
+
+By then, they're playing catch-up.
+
+The engineers landing $250K+ offers right now started preparing before that moment. Not after.
+
+Interview Kickstart is taught by 500+ engineers who are actively at Google, Meta, Amazon, and Apple. Not people who were there. People who are there now, writing the interviews you'll sit in.
+
+20,000 alumni. Average salary increase: 66%.
+
+See the next cohort: [link]
+
+- Marco / Ground Up</div>
+          </div>
+          <h4>Email 2 — The Proof</h4>
+          <div class="email-card">
+            <div class="tag">Broadcast — Send Day 3</div>
+            <div class="subj">Subject: $140K to $285K in 11 months.</div>
+            <div class="copy">That's what one engineer reported after going through Interview Kickstart's ML Engineering program.
+
+He wasn't entry-level. He had 6 years of experience. He just hadn't updated his stack since 2021.
+
+The gap wasn't effort. It wasn't intelligence. It was that nobody had shown him what FAANG engineers actually look for in interviews. The frameworks they use. The signals they're trained to look for.
+
+Interview Kickstart's instructors are the people writing those rubrics.
+
+The next cohort starts soon. Spots are limited.
+
+See if you qualify: [link]
+
+- Marco / Ground Up</div>
+          </div>
+          <h4>Email 3 — The Mechanism</h4>
+          <div class="email-card">
+            <div class="tag">Broadcast — Send Day 7</div>
+            <div class="subj">Subject: This isn't a bootcamp.</div>
+            <div class="copy">Bootcamps teach you to code.
+
+Interview Kickstart teaches you what interviewers at Google are actually looking for when they grade your answer. What signals put you in the top 10% of candidates. Where most engineers lose points without knowing it.
+
+Over 550 instructors. All active at tier-1 companies. All teaching the current rubric, not the one from 2019.
+
+That's why the average salary hike across 20,000 alumni is 66%.
+
+If you're serious about the next level, this is how people get there.
+
+See the curriculum: [link]
+
+- Marco / Ground Up</div>
+          </div>
+          <h4>Email 4 — The Objection</h4>
+          <div class="email-card">
+            <div class="tag">Broadcast — Send Day 10</div>
+            <div class="subj">Subject: "I can't justify $7K right now."</div>
+            <div class="copy">Fair.
+
+Here's the math:
+
+The average salary increase reported by Interview Kickstart alumni is 66%.
+
+If you're at $140K, that's $92K more per year.
+
+The course pays for itself in 28 days.
+
+And that's the average. Engineers who go from mid-level to senior at a FAANG company regularly report $100K+ jumps in total comp.
+
+The question isn't whether you can afford Interview Kickstart. It's whether you can afford to keep waiting.
+
+The next cohort is filling. See if you qualify: [link]
+
+- Marco / Ground Up</div>
+          </div>
+          <h4>Email 5 — The Close</h4>
+          <div class="email-card">
+            <div class="tag">Broadcast — Send Day 14</div>
+            <div class="subj">Subject: Cohort closes Friday.</div>
+            <div class="copy">This is the last email.
+
+The current cohort closes enrollment Friday. After that, the next available slot is [next cohort date].
+
+If you've been sitting on this: now is the time.
+
+20,000 engineers have gone through this program. The ones who got the offers didn't wait for the perfect moment. They made the move when the window was open.
+
+It's open right now.
+
+Enroll here: [link]
+
+- Marco / Ground Up</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- AD SCRIPTS -->
+      <details>
+        <summary>
+          <div class="sum-left">
+            <div class="sum-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <span class="sum-title">Paid Ad Scripts</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sum-badge">4 Ads</span>
+            <div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+          </div>
+        </summary>
+        <div class="det-body">
+          <p>Four cold-traffic scripts for Meta and LinkedIn. Each one targets a different psychological entry point. Built to convert engineers who are not actively searching for interview prep. Ad images to be produced separately.</p>
+          <div class="ad-card">
+            <div class="tag">Ad 1 — Fear / Problem Hook — Meta &amp; LinkedIn</div>
+            <div class="title">Your job isn't safe from AI. Your salary might be.</div>
+            <div class="copy">Here's what's actually happening:
+
+Companies like Google, Meta, and Amazon are cutting mid-level engineers who can't ship with AI.
+
+And promoting the ones who can.
+
+The difference isn't experience. It's whether your skills match what they're hiring for in 2026.
+
+Interview Kickstart is taught by 550+ active engineers from those exact companies. They teach what the rubric actually looks for. Not theory.
+
+20,000 alumni. Average 66% salary increase. Highest offer: $1.2M.
+
+See if you qualify.
+
+[CTA: Get a Free Consultation]</div>
+          </div>
+          <div class="ad-card">
+            <div class="tag">Ad 2 — Dream State / Outcome — Meta &amp; LinkedIn</div>
+            <div class="title">He had 6 years of experience. Still got rejected by Google three times.</div>
+            <div class="copy">Not because he couldn't do the job.
+
+Because he didn't know what Google's interviewers were actually grading.
+
+He went through Interview Kickstart's program. Learned the frameworks. Understood the signals. Interviewed again.
+
+Offer: Senior SWE at Google. $285K total comp.
+
+Interview Kickstart is taught by engineers who currently work at the companies you're trying to get into. They teach the actual rubric. Not what was on LeetCode in 2020.
+
+If you're experienced but keep hitting walls: this is why.
+
+[CTA: See the Curriculum]</div>
+          </div>
+          <div class="ad-card">
+            <div class="tag">Ad 3 — Social Proof / Authority — Meta &amp; LinkedIn</div>
+            <div class="title">550 engineers from Google, Meta, Apple, and Amazon helped build this curriculum.</div>
+            <div class="copy">Not former employees. Current ones.
+
+They teach what they're looking for right now. The frameworks they use to grade candidates. Where most engineers lose points without realizing it. How to signal seniority in the first 60 seconds of a system design answer.
+
+This is why Interview Kickstart alumni average a 66% salary increase.
+
+This is why 20,000 engineers have gone through the program.
+
+This is why the highest offer from an alumni is $1.2M.
+
+If you're preparing for a FAANG interview: you need the people writing the questions, not people who once sat in the seat.
+
+[CTA: See the Next Cohort]</div>
+          </div>
+          <div class="ad-card">
+            <div class="tag">Ad 4 — Pattern Interrupt / AI Angle — Meta &amp; LinkedIn</div>
+            <div class="title">The engineers keeping their jobs in 2026 aren't the most experienced ones.</div>
+            <div class="copy">They're the ones who know how to build with AI.
+
+Not talking about using ChatGPT. Talking about Agentic AI systems. LLM pipelines. The infrastructure that Big Tech companies are hiring for at $300K+.
+
+Interview Kickstart's Agentic AI curriculum was built by engineers from Google DeepMind, OpenAI, and Anthropic.
+
+12 weeks. Live instruction. Real systems.
+
+The engineers who trained on this are getting the offers. The ones who waited are now defending their current job in their next review.
+
+The window is open right now.
+
+[CTA: See the AI/ML Curriculum]</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- LANDING PAGES -->
+      <details>
+        <summary>
+          <div class="sum-left">
+            <div class="sum-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+            </div>
+            <span class="sum-title">Dedicated Landing Pages</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sum-badge">3 Pages</span>
+            <div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+          </div>
+        </summary>
+        <div class="det-body">
+          <p>Paid traffic needs its own pages. One audience, one goal, one conversion path. Sending cold traffic to your homepage kills conversion.</p>
+          <h4>Page 1 — AI/ML Career Protection (Cold Traffic)</h4>
+          <p>For engineers who click the fear/AI disruption ads. Angle: protecting your career, not upgrading it. One CTA: book a free consultation. No navigation. No distractions. Built to convert engineers who don't know Interview Kickstart yet.</p>
+          <h4>Page 2 — FAANG Salary Upgrade (Search + Warm)</h4>
+          <p>For high-intent traffic searching "FAANG interview prep" or "software engineer salary increase." Leads with the 66% average salary stat. Conversion path: short VSL then book a consultation. Captures engineers who are already comparison shopping.</p>
+          <h4>Page 3 — Agentic AI Course (Retargeting)</h4>
+          <p>For engineers who visited interviewkickstart.com but didn't convert. Specific to the Agentic AI track. Includes cohort scarcity signal and AI-specific alumni results. One action only.</p>
+        </div>
+      </details>
+
+      <!-- CAMPAIGN ARCHITECTURE -->
+      <details>
+        <summary>
+          <div class="sum-left">
+            <div class="sum-icon">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <span class="sum-title">Meta + LinkedIn Campaign Architecture</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sum-badge">3 Ad Groups</span>
+            <div class="chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+          </div>
+        </summary>
+        <div class="det-body">
+          <p>Three-layer structure: cold acquisition, warm retargeting, lookalike audiences from enrolled students. Meta handles interest and demographic signals. LinkedIn handles job title and company targeting.</p>
+          <h4>Target Audiences</h4>
+          <ul>
+            <li>Meta: Software engineers by interest + engagement with AI/ML content in the last 60 days</li>
+            <li>Meta: Engineers at companies with 500+ employees, ages 27–42</li>
+            <li>LinkedIn: "Software Engineer," "Senior SWE," "Staff Engineer" at Series B+ companies</li>
+            <li>LinkedIn: Engineers at Big Tech (Google, Meta, Apple, Amazon, Microsoft, Nvidia, OpenAI)</li>
+            <li>Meta Retargeting: All visitors to interviewkickstart.com in the last 30 days</li>
+          </ul>
+          <h4>Structure</h4>
+          <p><strong>Campaign 1 (Cold — Meta):</strong> AI disruption angle. Broad engineer targeting. 2 ad sets, 4 creative variants. <strong>Campaign 2 (Cold — LinkedIn):</strong> FAANG salary angle. Job-title targeting. 2 ad sets. <strong>Campaign 3 (Retargeting):</strong> Course-specific pages for Agentic AI + FAANG tracks.</p>
+          <h4>Budget Estimate</h4>
+          <p>Start: $1,500/month Meta + $500/month LinkedIn = $2,000/month total. Target CPL: $40–$80. At 8–15% lead-to-enrollment rate: $300–$1,000 cost per enrolled student against a $7,200 average course value. Scale on what converts after week 4.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+
+
+  <!-- ═══ SLIDE 4: AUDIT ═══ -->
+  <div class="slide" id="slide-3">
+    <div class="slide-body top">
+      <span class="label">Revenue Leak Audit</span>
+      <h2 class="section-title">Where <em>Interview Kickstart</em> is leaving enrollment on the table.</h2>
+      <p class="section-sub">$15M ARR built entirely on engineers who already knew to search for you. The ones who need your AI/ML courses most are not searching yet. That is a distribution problem, not a product problem.</p>
+
+      <div class="audit-stats">
+        <div class="audit-stat-card">
+          <div class="val">$0</div>
+          <div class="desc">Paid social ad spend identified. No Meta or LinkedIn acquisition running. $15M ARR built entirely on organic search and content.</div>
+        </div>
+        <div class="audit-stat-card">
+          <div class="val">74%</div>
+          <div class="desc">Engineers don't seek upskilling until after a performance review or layoff. Paid social reaches them before that moment — when the fear is active but no decision has been made.</div>
+        </div>
+        <div class="audit-stat-card">
+          <div class="val">20K</div>
+          <div class="desc">Alumni averaging a 66% salary increase. The strongest acquisition signal in EdTech — not being used as a lookalike audience source or structured referral channel.</div>
+        </div>
+      </div>
+
+      <table class="audit-table">
+        <thead>
+          <tr><th>Channel / Asset</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Meta / Instagram Paid Acquisition</td><td class="s-none">None identified</td></tr>
+          <tr><td>LinkedIn Paid Acquisition</td><td class="s-none">Not active</td></tr>
+          <tr><td>Dedicated Cold Traffic Landing Pages</td><td class="s-none">None — homepage only</td></tr>
+          <tr><td>Cold Traffic Email Nurture</td><td class="s-none">Not identified</td></tr>
+          <tr><td>Organic SEO + Blog Content</td><td class="s-ok">Strong</td></tr>
+          <tr><td>YouTube + Webinar Content</td><td class="s-ok">Active</td></tr>
+          <tr><td>Alumni Referral Program</td><td class="s-partial">Informal — no system</td></tr>
+        </tbody>
+      </table>
+
+      <div class="gap-grid">
+        <div class="gap-card">
+          <h4>Zero Cold Traffic Infrastructure</h4>
+          <p>$15M ARR and no paid social. Engineers watching AI displace their peers are reachable right now on Meta and LinkedIn. Nobody in the space is running those ads well. That is the opening.</p>
+        </div>
+        <div class="gap-card">
+          <h4>AI/ML Pivot With No New Distribution</h4>
+          <p>Agentic AI and GenAI are the biggest course bets in IK's history. They are being promoted to a warm existing audience. The cold-traffic window for the AI disruption narrative is open now and closing as more competitors enter.</p>
+        </div>
+        <div class="gap-card">
+          <h4>20,000 Alumni, Zero Referral System</h4>
+          <p>Peer referral is the strongest conversion signal in education. 20K alumni with a 66% average salary increase have no structured program to refer colleagues. A channel producing $0 in attributable enrollments at $0 ad spend.</p>
+        </div>
+        <div class="gap-card">
+          <h4>Homepage Not Built for Cold Traffic</h4>
+          <p>The homepage converts warm, intent-driven visitors. It cannot convert a cold-traffic engineer who clicked a fear-based AI disruption ad. Paid channels need dedicated pages built for that entry point.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="margin-bottom:14px;">What we build. <em>Phase by phase.</em></h2>
+      <p class="section-sub">Foundation through scale. Here is the sequence.</p>
+
+      <div class="phase-list">
+        <div class="phase-card">
+          <span class="phase-num">Phase 1 — Weeks 1–2</span>
+          <div class="phase-title">Foundation Build</div>
+          <div class="phase-body"><p>Messaging framework locked. 3 landing pages built. 4 ad scripts finalized and paired with creative briefs. 5-email broadcast sequence written and loaded. Meta pixel and LinkedIn Insight Tag installed and verified.</p></div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">Phase 2 — Weeks 3–4</span>
+          <div class="phase-title">Launch</div>
+          <div class="phase-body"><p>Meta cold acquisition live — AI disruption angle, 2 ad sets. LinkedIn test live — FAANG salary angle, 2 ad sets. Broadcast sequence active for new opt-ins. Weekly report delivered.</p></div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">Phase 3 — Month 2</span>
+          <div class="phase-title">Optimization</div>
+          <div class="phase-body"><p>First creative refresh based on CPL data. Winning angle scaled. Lookalike audiences built from enrolled student list upload. Retargeting layer activated. Alumni referral email sent to existing list.</p></div>
+        </div>
+        <div class="phase-card">
+          <span class="phase-num">Phase 4 — Month 3+</span>
+          <div class="phase-title">Scale</div>
+          <div class="phase-body"><p>50–100 new ad variations per month via AI production (vs. 4–8 from a standard agency). Second funnel launched for FAANG-specific track. Google Search layer added for high-intent queries. Full-funnel attribution dashboard live.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ SLIDE 5: OFFER + GUARANTEE ═══ -->
+  <div class="slide surface" id="slide-4">
+    <div class="slide-body top">
+      <span class="label">The Offer</span>
+      <h2 class="section-title">What's included. What it costs. <em>What we guarantee.</em></h2>
+
+      <table class="pricing-table">
+        <colgroup>
+          <col style="width:22%">
+          <col style="width:56%">
+          <col style="width:22%">
+        </colgroup>
+        <thead>
+          <tr><th>Component</th><th>What's Included</th><th>Price</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Setup — one time</strong></td>
+            <td>Messaging framework, 3 dedicated landing pages, 4 ad scripts with creative briefs, 5-email broadcast sequence, Meta + LinkedIn campaign setup and launch, pixel and tag installation.</td>
+            <td class="price-val">$4,500</td>
+          </tr>
+          <tr>
+            <td><strong>Monthly management</strong></td>
+            <td>Campaign management, weekly creative refresh (50–100 new ad variations per month), landing page optimization, monthly performance report.</td>
+            <td class="price-val">$2,000/month</td>
+          </tr>
+          <tr>
+            <td><strong>Ad spend</strong></td>
+            <td>Paid directly to Meta + LinkedIn. Not to us.</td>
+            <td class="price-val">$2,000–$3,000/month</td>
+          </tr>
+          <tr>
+            <td><strong>Performance fee</strong></td>
+            <td>None. Transparent management retainer only. Your ad spend goes to the platforms. We make money when you keep us.</td>
+            <td class="price-val">Included</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="guarantee-box">
+        <h3>10+ new enrolled students a month. 60 days. Or we work for free.</h3>
+        <p>If we don't hit 10 new enrollments within 60 days of launch, we keep working at no additional cost until we do.</p>
+        <p>Every asset we build — pages, ad scripts, email sequences, campaign architecture — is yours. You keep it regardless of what happens.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ SLIDE 6: FINAL CTA ═══ -->
+  <div class="slide" id="slide-5">
+    <div class="slide-body" style="text-align:center;">
+      <span class="label">Next Step</span>
+      <h2 class="cta-h2">30 minutes. No pitch. <em>No commitment.</em></h2>
+      <p class="cta-sub">Ask anything. We'll tell you straight whether this makes sense for Interview Kickstart.</p>
+      <a href="{{CALENDLY_URL}}" target="_blank" class="btn btn-accent" style="font-size:1rem;padding:16px 40px;">Book a 30-Minute Call</a>
+      <p class="cta-note">Or email: <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p>
+
+      <div class="cta-footer">
+        <p><strong>Marco Garcia</strong> &nbsp;&bull;&nbsp; Ground Up Agency &nbsp;&bull;&nbsp; <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p>
+        <p style="margin-top:5px;color:#4a5568;">Built specifically for Interview Kickstart.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- Global fixed next-slide arrow -->
+<button id="next-hint-btn" onclick="nextSlide()" title="Next slide">
+  <svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg>
+</button>
+
+<!-- Lightbox overlay -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<script>
+  const LOOM_ID = '{{LOOM_ID}}';
+  const SLIDE_LABELS = ['Intro', 'Proof & Results', 'What We Already Built You', 'Your Audit', 'The Offer', 'Book a Call'];
+
+  let current = 0;
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+
+  // Build dots with TOC labels
+  const dotsContainer = document.getElementById('deck-dots');
+  slides.forEach((_, i) => {
+    const row = document.createElement('div');
+    row.className = 'deck-dot-row' + (i === 0 ? ' toc-active' : '');
+    row.dataset.index = i;
+
+    const lbl = document.createElement('span');
+    lbl.className = 'deck-dot-lbl';
+    lbl.textContent = SLIDE_LABELS[i] || '';
+
+    const dot = document.createElement('div');
+    dot.className = 'deck-dot' + (i === 0 ? ' active' : '');
+    dot.title = SLIDE_LABELS[i] || '';
+    dot.onclick = () => goToSlide(i);
+
+    row.appendChild(lbl);
+    row.appendChild(dot);
+    dotsContainer.appendChild(row);
+  });
+
+  function updateUI() {
+    slides.forEach((slide, i) => {
+      slide.style.transform = i < current ? 'translateY(-100%)' :
+                              i > current ? 'translateY(100%)' :
+                              'translateY(0)';
+    });
+    document.querySelectorAll('.deck-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+    document.querySelectorAll('.deck-dot-row').forEach((r, i) => {
+      r.classList.toggle('toc-active', i === current);
+    });
+    document.getElementById('slide-counter').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('btn-prev').disabled = current === 0;
+    document.getElementById('btn-next').disabled = current === total - 1;
+    const nhb = document.getElementById('next-hint-btn');
+    if (nhb) nhb.style.display = current === total - 1 ? 'none' : 'flex';
+  }
+
+  function goToSlide(n) {
+    if (n < 0 || n >= total) return;
+    current = n;
+    updateUI();
+  }
+
+  function nextSlide() { goToSlide(current + 1); }
+  function prevSlide() { goToSlide(current - 1); }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  { e.preventDefault(); prevSlide(); }
+  });
+
+  // VSL loader
+  function loadVSL() {
+    if (!LOOM_ID || LOOM_ID === '{{LOOM_ID}}') { alert('Add your Loom video ID to activate the video.'); return; }
+    document.getElementById('vsl-placeholder').style.display = 'none';
+    const iframe = document.getElementById('vsl-iframe');
+    iframe.src = 'https://www.loom.com/embed/' + LOOM_ID + '?autoplay=1&hide_owner=true&hide_share=true&hide_title=true';
+    iframe.style.cssText = 'display:block;position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:12px;';
+  }
+
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+
+  document.querySelectorAll('.founder-banner img, .founder-proof img').forEach(img => {
+    img.addEventListener('click', e => {
+      e.stopPropagation();
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('open');
+    });
+  });
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightboxImg.src = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  // Init
+  updateUI();
+</script>
+
+</body>
+</html>
